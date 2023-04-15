@@ -1,14 +1,14 @@
 package es.casensio.tutorial.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class Repo(
     val id: Long,
     val name: String,
     val description: String,
     val owner: User,
-    @Json(name = "stargazers_count")
+    @SerializedName("stargazers_count")
     val stars: Long,
-    @Json(name = "forks_count")
+    @SerializedName("forks_count")
     val forks: Long
 )
