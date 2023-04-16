@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.casensio.tutorial.model.Repo
-import es.casensio.tutorial.networking.RepoApi
+import es.casensio.tutorial.networking.RepoService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class ListViewModel : ViewModel() {
+class ListViewModel @Inject constructor(val repoService: RepoService): ViewModel() {
 
     private val _repos: MutableLiveData<List<Repo>> = MutableLiveData()
     private val _repoLoadError: MutableLiveData<Boolean> = MutableLiveData()
@@ -33,7 +34,7 @@ class ListViewModel : ViewModel() {
 
     private fun fetchRepos() {
         _loading.value = true
-        repoCall = RepoApi().getInstance()?.getRepositories()
+        repoCall = repoService.getRepositories()
         repoCall?.enqueue(object : Callback<List<Repo>> {
             override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
                 _repos.value = response.body()

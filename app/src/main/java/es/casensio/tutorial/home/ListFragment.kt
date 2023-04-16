@@ -1,5 +1,6 @@
 package es.casensio.tutorial.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.casensio.tutorial.R
+import es.casensio.tutorial.di.MyApplication
+import javax.inject.Inject
 
 class ListFragment : Fragment() {
 
@@ -19,8 +21,14 @@ class ListFragment : Fragment() {
     private lateinit var errorMessage: TextView
     private lateinit var progressBar: ProgressBar
 
-    private lateinit var viewModel: ListViewModel
+    @Inject
+    lateinit var viewModel: ListViewModel
     private lateinit var adapter: RepoListAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        MyApplication().getApplicationComponent(context).inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +48,6 @@ class ListFragment : Fragment() {
         adapter = RepoListAdapter()
         setUpRecyclerView()
 
-        viewModel = ViewModelProviders.of(this)[ListViewModel::class.java]
         observeViewModel()
     }
 
